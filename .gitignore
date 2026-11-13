@@ -37,8 +37,6 @@ Thumbs.db
 .git/
 
 # Folders
-data/
-/data/
 help/
 /help/
 scripts/
