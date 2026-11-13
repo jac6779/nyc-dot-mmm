@@ -15,11 +15,6 @@ venv/
 *.pem
 *.key
 
-# Data files (don’t upload large datasets)
-data/
-*.csv
-*.parquet
-
 # Logs
 *.log
 
