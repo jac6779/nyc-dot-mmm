@@ -16,7 +16,7 @@ The analysis addresses three questions:
 - How much uncertainty surrounds the estimated contributions of those channels?
 - Are the results sufficiently reliable to inform advertising spending decisions?
 
-**Main conclusion:** The model provides encouraging predictive fit, but the combined advertising contribution is uncertain. The evidence does **not** support reallocating NYC DOT's advertising budget on the basis of this analysis alone.
+**Main conclusion:** The model fits weekly crashes moderately well, but much of that fit may come from the trend, seasonality, holiday, and policy controls rather than advertising. I did not fit a controls-only baseline, so I cannot separate the two. The combined advertising contribution is uncertain, and the results are inconclusive.
 
 ---
 
@@ -50,7 +50,7 @@ I downloaded the original advertising data as a CSV and used Python scripts to c
 
 The original combined panel contained **158 weeks** (June 27, 2022–June 30, 2025). After excluding the two edge weeks with incomplete spending coverage, the analysis uses **156 complete Monday-start weeks**, from **July 4, 2022, through June 23, 2025**.
 
-I selected fiscal years **2023–2025** to work with approximately three years of history and multiple annual seasonal cycles, consistent with a common starting point for MMM analysis.
+I selected fiscal years **2023–2025** to work with approximately three years of history and multiple annual seasonal cycles.
 
 **Key data assumption:** The source reports expenditure for scheduled advertising runs, not observed daily delivery. Allocating each buy uniformly across its run dates produces **estimated weekly spending**, not measured weekly impressions, reach, or frequency.
 
@@ -115,9 +115,9 @@ The posterior sampling configuration used **four MCMC chains**, with **500 adapt
 | **R²** | **0.741** | **0.856** |
 | **MAPE** | **3.74%** | **2.74%** |
 
-The model explained substantial variation in weekly crash counts and achieved relatively small percentage prediction errors. The expected-versus-actual plot also followed much of the observed trend and seasonality.
+The model explained a moderate-to-large share of the variation in weekly crashes, and the expected-versus-actual plot followed much of the observed trend and seasonality. Because the controls themselves capture trend and seasonality, this fit does not show how much of it is due to advertising.
 
-**Important:** Predictive fit does **not** demonstrate that individual advertising contributions are correctly identified. The random test weeks may also be easier to predict than a genuinely future period because nearby observations can share temporal patterns.
+**Important:** Predictive fit does **not** demonstrate that individual advertising contributions are correctly identified. The random test weeks may also be easier to predict than a genuinely future period because nearby observations can share temporal patterns. Test R² is higher than training R², which likely reflects the small holdout (roughly 16 randomly chosen weeks) rather than better generalization, so I do not read it as a meaningful result.
 
 ---
 
@@ -136,7 +136,7 @@ The following estimates are **modeled contributions to total crashes over the st
 
 ### Results Interpretation
 
-- **TV:** The estimated contribution is positive, and its 95% credible interval is entirely above zero. This supports a positive *modeled association*, but it does not mean TV advertising caused additional crashes. NYC DOT could, for example, increase TV spending in response to elevated crash rates (**reverse causality**).
+- **TV:** The estimated contribution is positive, and its 95% credible interval is entirely above zero. This supports a positive *modeled association*, but it does not mean TV advertising caused additional crashes. One possible explanation, which I did not test, is that NYC DOT increased TV spending in response to elevated crash rates (**reverse causality**).
 - **Print:** The largest negative mean estimate, but its credible interval includes positive values. The direction of its association remains uncertain.
 - **Radio, Digital/Social, and OOH/Other:** Credible intervals cross zero, leaving substantial uncertainty about the direction and magnitude of individual contributions.
 - **Combined advertising:** The mean net contribution is slightly negative, but its credible interval spans both negative and positive values. The model therefore does **not** establish an overall increase or reduction in crashes associated with advertising.
@@ -145,7 +145,7 @@ Expected and no-advertising-baseline crash estimates were relatively close in th
 
 ### Prior Sensitivity
 
-In separate sensitivity checks, I compared media coefficient prior standard deviations of **0.5, 1, and 2**. Channel contribution estimates changed in magnitude, but the broad directional conclusions remained similar. This reduced my concern that the original prior standard deviation alone was driving the findings; it does not resolve the underlying identification or causal-inference limitations.
+In separate sensitivity checks, I compared media coefficient prior standard deviations of **0.5, 1, and 2**. Channel contribution estimates changed in magnitude, but the broad directional conclusions remained similar. This reduced my concern that the original prior standard deviation alone was driving the findings; it does not resolve the underlying identification or causal-inference limitations. These checks were run interactively and are not included in the notebooks; results are summarized qualitatively.
 
 ---
 
@@ -157,7 +157,8 @@ The main limitations of this analysis are:
 - **Reverse causality:** Advertising may be increased in response to crash rates, potentially creating positive spending–crash associations even if advertising itself is beneficial.
 - **Channel correlation and sparsity:** Overlapping campaigns and long periods with zero spend make separating individual channel contributions difficult.
 - **Unmeasured factors:** Traffic volume, weather, driving patterns, and other policies could explain variation not captured by the current controls. A binary congestion-pricing indicator cannot represent the policy's full effects.
-- **Observational attribution:** Convergence and strong predictive accuracy do not establish causal effects or justify interpreting modeled contributions as definitive advertising effectiveness.
+- **Observational attribution:** Convergence and predictive accuracy do not establish causal effects or justify interpreting modeled contributions as definitive advertising effectiveness.
+- **No controls-only baseline:** I cannot say how much predictive value the media inputs add beyond trend, seasonality, and holiday and policy controls.
 
 **Decision:** I would **not recommend budget reallocations** based on these results. I would prioritize additional investigation into the timing of TV advertising relative to elevated crash rates, while treating the overall conclusions as inconclusive.
 
@@ -165,7 +166,7 @@ The main limitations of this analysis are:
 
 ## Additional Research Opportunities
 
-This portfolio project is complete as an observational MMM exercise. Potential extensions—not prerequisites for completion—include:
+This project is a completed observational MMM exercise. Potential extensions—not prerequisites for completion—include:
 
 1. Adding impressions, reach, and frequency to improve the measurement of advertising exposure.
 2. Studying campaign launch decisions and whether increased crash rates trigger additional spending.
@@ -182,9 +183,9 @@ This portfolio project is complete as an observational MMM exercise. Potential e
 - Time-series exploratory analysis and temporal feature engineering
 - Marketing mix modeling using Google Meridian
 - Bayesian priors, posterior interpretation, credible intervals, and MCMC convergence diagnostics
-- Adstock, saturation, and uncertainty-aware channel contribution analysis
+- Specifying adstock and saturation in Meridian
 - Holdout evaluation and predictive metrics
-- Prior sensitivity analysis and critical interpretation of observational results
+- Prior sensitivity checks and critical interpretation of observational results
 - Communicating findings and practical limitations to decision-makers
 
 ---
