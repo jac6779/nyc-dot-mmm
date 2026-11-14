@@ -117,7 +117,7 @@ The posterior sampling configuration used **four MCMC chains**, with **500 adapt
 
 The model explained a moderate-to-large share of the variation in weekly crashes, and the expected-versus-actual plot followed much of the observed trend and seasonality. Because the controls themselves capture trend and seasonality, this fit does not show how much of it is due to advertising.
 
-**Important:** Predictive fit does **not** demonstrate that individual advertising contributions are correctly identified. The random test weeks may also be easier to predict than a genuinely future period because nearby observations can share temporal patterns. Test R² is higher than training R², which likely reflects the small holdout (roughly 16 randomly chosen weeks) rather than better generalization, so I do not read it as a meaningful result.
+**Important:** Predictive fit does **not** demonstrate that individual advertising contributions are correctly identified. The random test weeks may also be easier to predict than a genuinely future period because nearby observations can share temporal patterns. Test R² is higher than training R², which likely reflects the small holdout (15 randomly chosen weeks) rather than better generalization, so I do not read it as a meaningful result.
 
 ---
 
