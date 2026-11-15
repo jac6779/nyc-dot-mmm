@@ -16,7 +16,7 @@ The analysis addresses three questions:
 - How much uncertainty surrounds the estimated contributions of those channels?
 - Are the results sufficiently reliable to inform advertising spending decisions?
 
-**Main conclusion:** The model fits weekly crashes moderately well, but much of that fit may come from the trend, seasonality, holiday, and policy controls rather than advertising. I did not fit a controls-only baseline, so I cannot separate the two. The combined advertising contribution is uncertain, and the results are inconclusive.
+**Main conclusion:** The model fits weekly crashes moderately well, but much of that fit may come from the trend, seasonality, holiday, and policy controls rather than advertising. A controls-only linear baseline explains most of the fit (holdout R² 0.711, vs 0.787 with media), so advertising adds some predictive value, but that does not show advertising affects crashes, and the combined contribution is uncertain.
 
 ---
 
@@ -110,14 +110,19 @@ The posterior sampling configuration used **four MCMC chains**, with **500 adapt
 
 ## Predictive Performance
 
-| Metric | Training | Holdout test |
-|---|---:|---:|
-| **R²** | **0.741** | **0.856** |
-| **MAPE** | **3.74%** | **2.74%** |
+### Model Comparison
 
-The model explained a moderate-to-large share of the variation in weekly crashes, and the expected-versus-actual plot followed much of the observed trend and seasonality. Because the controls themselves capture trend and seasonality, this fit does not show how much of it is due to advertising.
+| Model | Train R² | Test R² | Train MAPE | Test MAPE |
+|---|---:|---:|---:|---:|
+| Controls only (linear regression) | 0.622 | 0.711 | 4.69% | 3.75% |
+| Controls + media (linear regression) | 0.702 | 0.787 | 4.17% | 3.00% |
+| Meridian (Bayesian MMM) | 0.741 | 0.856 | 3.74% | 2.74% |
 
-**Important:** Predictive fit does **not** demonstrate that individual advertising contributions are correctly identified. The random test weeks may also be easier to predict than a genuinely future period because nearby observations can share temporal patterns. Test R² is higher than training R², which likely reflects the small holdout (15 randomly chosen weeks) rather than better generalization, so I do not read it as a meaningful result.
+*All three models use the same 15 randomly held-out weeks. The linear regressions use raw weekly spend and do not model adstock or saturation, so the comparison with Meridian is not like-for-like.*
+
+Adding media to the controls raised holdout R² from 0.711 to 0.787, so advertising spend carries some predictive information beyond trend, seasonality, holidays, and congestion pricing. The Meridian expected-versus-actual plot also followed much of the observed trend and seasonality.
+
+**Important:** Predictive fit does **not** demonstrate that individual advertising contributions are correctly identified. Spend may track campaign timing or respond to crash levels, so a predictive gain is not evidence of an advertising effect, and with only 15 test weeks the size of the gain is uncertain. Every model scores higher on the holdout than on training data, which suggests the holdout weeks are easier to predict, so I do not read the higher test scores as a meaningful result.
 
 ---
 
@@ -158,7 +163,6 @@ The main limitations of this analysis are:
 - **Channel correlation and sparsity:** Overlapping campaigns and long periods with zero spend make separating individual channel contributions difficult.
 - **Unmeasured factors:** Traffic volume, weather, driving patterns, and other policies could explain variation not captured by the current controls. A binary congestion-pricing indicator cannot represent the policy's full effects.
 - **Observational attribution:** Convergence and predictive accuracy do not establish causal effects or justify interpreting modeled contributions as definitive advertising effectiveness.
-- **No controls-only baseline:** I cannot say how much predictive value the media inputs add beyond trend, seasonality, and holiday and policy controls.
 
 **Decision:** I would **not recommend budget reallocations** based on these results. I would prioritize additional investigation into the timing of TV advertising relative to elevated crash rates, while treating the overall conclusions as inconclusive.
 
@@ -172,8 +176,7 @@ This project is a completed observational MMM exercise. Potential extensions—n
 2. Studying campaign launch decisions and whether increased crash rates trigger additional spending.
 3. Exploring uncertainty in adstock and saturation parameters.
 4. Incorporating detailed traffic volume and congestion-pricing measures, as well as other relevant external controls.
-5. Comparing predictive performance with a **controls-only** baseline to assess the incremental value of media inputs.
-6. Using stronger causal identification before making advertising budget decisions.
+5. Using stronger causal identification before making advertising budget decisions.
 
 ---
 
