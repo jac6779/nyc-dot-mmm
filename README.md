@@ -141,7 +141,7 @@ The following estimates are **modeled contributions to total crashes over the st
 
 ### Results Interpretation
 
-- **TV:** The estimated contribution is positive, and its 95% credible interval is entirely above zero. This supports a positive *modeled association*, but it does not mean TV advertising caused additional crashes. One possible explanation, which I did not test, is that NYC DOT increased TV spending in response to elevated crash rates (**reverse causality**).
+- **TV:** The estimated contribution is positive, and its 95% credible interval is entirely above zero under the primary prior (it includes zero under a tighter sd 0.5 prior; see Prior Sensitivity). This supports a positive *modeled association*, but it does not mean TV advertising caused additional crashes. One possible explanation, which I did not test, is that NYC DOT increased TV spending in response to elevated crash rates (**reverse causality**).
 - **Print:** The largest negative mean estimate, but its credible interval includes positive values. The direction of its association remains uncertain.
 - **Radio, Digital/Social, and OOH/Other:** Credible intervals cross zero, leaving substantial uncertainty about the direction and magnitude of individual contributions.
 - **Combined advertising:** The mean net contribution is slightly negative, but its credible interval spans both negative and positive values. The model therefore does **not** establish an overall increase or reduction in crashes associated with advertising.
@@ -150,7 +150,22 @@ Expected and no-advertising-baseline crash estimates were relatively close in th
 
 ### Prior Sensitivity
 
-In separate sensitivity checks, I compared media coefficient prior standard deviations of **0.5, 1, and 2**. Channel contribution estimates changed in magnitude, but the broad directional conclusions remained similar. This reduced my concern that the original prior standard deviation alone was driving the findings; it does not resolve the underlying identification or causal-inference limitations. These checks were run interactively and are not included in the notebooks; results are summarized qualitatively.
+I refit the model with media coefficient prior standard deviations of **0.5, 1 (primary), and 2**, holding the data, holdout, and sampling settings fixed. Predictive fit barely changed (test R² of 0.868, 0.856, and 0.839), and R-hat was below 1.01 in all fits.
+
+| Channel | sd 0.5 | sd 1.0 (primary) | sd 2.0 |
+|---|---:|---:|---:|
+| TV | +4,142 (−52 to +8,551) | +6,778 (+690 to +14,202) | +9,605 (+1,850 to +18,928) |
+| Radio | −3 (−8,654 to +5,497) | −1,949 (−12,127 to +6,103) | −5,422 (−17,474 to +5,602) |
+| Print | −7,289 (−14,806 to +2,908) | −9,366 (−18,596 to +2,077) | −9,792 (−20,273 to +1,911) |
+| Digital/Social | +1,168 (−3,992 to +4,525) | +1,549 (−4,373 to +5,925) | +2,304 (−4,466 to +6,924) |
+| OOH/Other | +1,684 (−4,943 to +5,729) | +2,275 (−5,701 to +7,178) | +2,765 (−5,818 to +8,234) |
+| **All channels** | **−298 (−4,054 to +3,572)** | **−713 (−4,521 to +3,076)** | **−540 (−4,496 to +3,275)** |
+
+*Mean estimated contribution (95% credible interval).*
+
+Mean contribution signs were stable for TV (positive), Print (negative), Digital/Social (positive), OOH/Other (positive), and all channels combined (slightly negative); Radio moved from about zero to negative as the prior widened. Magnitudes grew with the prior (TV from about 4,100 to 9,600), so estimates depend on the prior to a meaningful degree.
+
+TV's 95% interval excluded zero at sd 1 and 2 but included it at sd 0.5, so the TV result is sensitive to the prior. No other channel's interval, and not the combined interval, excluded zero under any prior. This does not resolve the underlying identification or causal-inference limitations.
 
 ---
 
